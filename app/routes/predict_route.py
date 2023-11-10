@@ -1,5 +1,7 @@
 from flask import Blueprint, abort, request, make_response, jsonify
 from app.controllers.velocity_controller import predict_velocity
+from app.controllers.density_controller import predict_density
+from app.controllers.condition_controller import predict_condition
 
 predict_blueprint = Blueprint('velocity', __name__, url_prefix='/api')
 
@@ -13,13 +15,13 @@ def predict_all_aspects():
             abort(404, description="Missing camera_id parameter.")
             
         velocity = predict_velocity(camera_id)
-        # condition = predict_codition(camera_id)
-        # density = predict_density(camera_id)
+        condition = predict_condition(camera_id)
+        density = predict_density(camera_id)
         
         data = {
             'velocity': velocity,
-            # 'condition': condition,
-            # 'density': density
+            'condition': condition,
+            'density': density
         }
         
         response = make_response(jsonify(data), 200)
